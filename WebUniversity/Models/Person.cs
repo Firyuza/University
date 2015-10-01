@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebUniversity.Models
 {
@@ -14,8 +12,16 @@ namespace WebUniversity.Models
         }
 
         public long id { get; set; }
+
+        [Required]
+        [Display(Name = "First name")]
         public string firstname { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
         public string lastname { get; set; }
+
+        [Display(Name = "Middle name")]
         public string middlename { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }

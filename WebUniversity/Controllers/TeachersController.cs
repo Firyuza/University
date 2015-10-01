@@ -23,6 +23,8 @@ namespace WebUniversity.Controllers
         // GET: Teachers/Details/5
         public ActionResult Details(long? id)
         {
+            GetRelativeEntities();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,6 +40,8 @@ namespace WebUniversity.Controllers
         // GET: Teachers/Create
         public ActionResult Create()
         {
+            GetRelativeEntities();
+
             return View();
         }
 
@@ -46,12 +50,15 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,person_id,department_id,course_id,position_id")] Teacher teacher)
+        public ActionResult Create([Bind(Include = "id,Person,Department,Course,Position")] Teacher teacher)
         {
             if (ModelState.IsValid)
             {
+                SetRelativeEntities(teacher);
+
                 db.Teachers.Add(teacher);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -65,11 +72,15 @@ namespace WebUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Teacher teacher = db.Teachers.Find(id);
             if (teacher == null)
             {
                 return HttpNotFound();
             }
+
+            GetRelativeEntities();
+
             return View(teacher);
         }
 
@@ -78,12 +89,15 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,person_id,department_id,course_id,position_id")] Teacher teacher)
+        public ActionResult Edit([Bind(Include = "id,Person,Department,Course,Position")] Teacher teacher)
         {
             if (ModelState.IsValid)
             {
+                SetRelativeEntities(teacher);
+
                 db.Entry(teacher).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(teacher);
@@ -122,6 +136,30 @@ namespace WebUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void GetRelativeEntities()
+        {
+            var departments = db.Departments.ToList();
+            ViewBag.Department = new SelectList(departments, "id", "name");
+
+            var positions = db.Positions.ToList();
+            ViewBag.Position = new SelectList(positions, "id", "name");
+
+            var courses = db.Courses.ToList();
+            ViewBag.Course = new SelectList(courses, "id", "name");
+        }
+
+        private void SetRelativeEntities(Teacher teacher)
+        {
+            var department = db.Departments.Find(teacher.Department.id);
+            teacher.Department = department;
+
+            var position = db.Positions.Find(teacher.Position.id);
+            teacher.Position = position;
+
+            var course = db.Courses.Find(teacher.Course.id);
+            teacher.Course = course;
         }
     }
 }

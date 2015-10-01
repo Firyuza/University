@@ -33,5 +33,13 @@ namespace WebUniversity.Models
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
+
+        public DbSet<Group> Groups { get; set; }
+
+        public System.Data.Entity.DbSet<WebUniversity.Models.Department> Departments { get; set; }
+
+        public System.Data.Entity.DbSet<WebUniversity.Models.Position> Positions { get; set; }
+
+        public System.Data.Entity.DbSet<WebUniversity.Models.Course> Courses { get; set; }
     }
 }

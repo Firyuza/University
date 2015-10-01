@@ -6,112 +6,107 @@ using WebUniversity.Models;
 
 namespace WebUniversity.Controllers
 {
-    public class StudentsController : Controller
+    public class GroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Students
+        // GET: Groups
         public ActionResult Index()
         {
-            return View(db.Students.ToList());
+            return View(db.Groups.ToList());
         }
 
-        // GET: Students/Details/5
+        // GET: Groups/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(group);
         }
 
-        // GET: Students/Create
+        // GET: Groups/Create
         public ActionResult Create()
         {
-            GetGroupList();
-
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Groups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,Person,Recordbook,Group")] Student student)
+        public ActionResult Create([Bind(Include = "id,name")] Group group)
         {
-            // Make full Student Entity after posting
-            SetRelativeEntities(student);
+            if (ModelState.IsValid)
+            {
+                db.Groups.Add(group);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
-            db.Students.Add(student);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return View(group);
         }
 
-        // GET: Students/Edit/5
+        // GET: Groups/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Student student = db.Students.Find(id);
-
-            if (student == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-
-            GetGroupList();
-
-            return View(student);
+            return View(group);
         }
 
-        // POST: Students/Edit/5
+        // POST: Groups/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,Person,Recordbook,Group")] Student student)
+        public ActionResult Edit([Bind(Include = "id,name")] Group group)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
+                db.Entry(group).State = EntityState.Modified;
                 db.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return View(group);
         }
 
-        // GET: Students/Delete/5
+        // GET: Groups/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(group);
         }
 
-        // POST: Students/Delete/5
+        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
+            Group group = db.Groups.Find(id);
+            db.Groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -123,18 +118,6 @@ namespace WebUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private void SetRelativeEntities(Student student)
-        {
-            var group = db.Groups.Find(student.Group.id);
-            student.Group = group;
-        }
-
-        private void GetGroupList()
-        {
-            var groups = db.Groups.ToList();
-            ViewBag.Group = new SelectList(groups, "id", "name");
         }
     }
 }

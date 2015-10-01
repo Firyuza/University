@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebUniversity.Models.Student>
+﻿@model IEnumerable<WebUniversity.Models.Course>
 
 @{
     ViewBag.Title = "Index";
@@ -12,13 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            Student
-        </th>
-        <th>
-            Record book
-        </th>
-        <th>
-            Group
+            @Html.DisplayNameFor(model => model.name)
         </th>
         <th></th>
     </tr>
@@ -26,13 +20,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @item.Person.firstname  @item.Person.lastname
-        </td>
-        <td>
-            @item.RecordBook.number
-        </td>
-        <td>
-            @item.Group.name
+            @Html.DisplayFor(modelItem => item.name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

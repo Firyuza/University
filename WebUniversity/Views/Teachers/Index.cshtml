@@ -12,16 +12,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.person_id)
+            @Html.DisplayNameFor(model => model.Person.firstname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.department_id)
+            @Html.DisplayNameFor(model => model.Person.lastname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.course_id)
+            @Html.DisplayNameFor(model => model.Person.middlename)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.position_id)
+            @Html.DisplayNameFor(model => model.Department.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.name)
         </th>
         <th></th>
     </tr>
@@ -29,16 +35,22 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.person_id)
+            @Html.DisplayFor(modelItem => item.Person.firstname)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.department_id)
+            @Html.DisplayFor(modelItem => item.Person.lastname)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.course_id)
+            @Html.DisplayFor(modelItem => item.Person.middlename)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.position_id)
+            @Html.DisplayFor(modelItem => item.Department.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Position.name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
