@@ -26,6 +26,9 @@ namespace WebUniversity
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/report").Include(
+                "~/Scripts/report-data.js"));
         }
     }
 }

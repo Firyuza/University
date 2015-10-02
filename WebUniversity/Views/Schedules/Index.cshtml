@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebUniversity.Models.Schedule>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Group)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Teacher)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Teacher.Person.firstname)
+            @Html.DisplayFor(modelItem => item.Teacher.Person.lastname)
+            @Html.DisplayFor(modelItem => item.Teacher.Person.middlename)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

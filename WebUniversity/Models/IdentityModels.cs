@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -30,6 +31,11 @@ namespace WebUniversity.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            throw new UnintentionalCodeFirstException();
+        }
+
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
@@ -41,5 +47,7 @@ namespace WebUniversity.Models
         public System.Data.Entity.DbSet<WebUniversity.Models.Position> Positions { get; set; }
 
         public System.Data.Entity.DbSet<WebUniversity.Models.Course> Courses { get; set; }
+
+        public System.Data.Entity.DbSet<WebUniversity.Models.Schedule> Schedules { get; set; }
     }
 }

@@ -11,35 +11,37 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.person_id)
+            @Html.DisplayNameFor(model => model.Person.firstname) <br />
+            @Html.DisplayNameFor(model => model.Person.lastname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.person_id)
+            @Html.DisplayFor(model => model.Person.firstname) <br />
+            @Html.DisplayFor(model => model.Person.lastname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.department_id)
+            @Html.DisplayNameFor(model => model.Department.name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.department_id)
+            @Html.DisplayFor(model => model.Department.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.course_id)
+            @Html.DisplayNameFor(model => model.Position.name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.course_id)
+            @Html.DisplayFor(model => model.Position.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.position_id)
+            @Html.DisplayNameFor(model => model.Course.name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.position_id)
+            @Html.DisplayFor(model => model.Course.name)
         </dd>
 
     </dl>
