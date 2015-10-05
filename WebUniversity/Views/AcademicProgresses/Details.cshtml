@@ -1,0 +1,67 @@
+﻿@model WebUniversity.Models.AcademicProgress
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AcademicProgress</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Student)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Person.firstname)
+            @Html.DisplayFor(model => model.Student.Person.lastname)
+            @Html.DisplayFor(model => model.Student.Person.middlename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Group)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Group.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayFor(model => model.Teacher.Course)
+        </dt>
+
+        <dd>
+            @Html.DisplayNameFor(model => model.Teacher.Course.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayFor(model => model.Teacher)
+        </dt>
+        <dd>
+            @Html.DisplayNameFor(model => model.Teacher.Person.firstname)
+            @Html.DisplayNameFor(model => model.Teacher.Person.lastname)
+            @Html.DisplayNameFor(model => model.Teacher.Person.middlename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.score)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.score)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

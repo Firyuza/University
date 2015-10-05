@@ -1,0 +1,89 @@
+﻿@using WebUniversity.Models
+@model WebUniversity.Models.ExaminationDatasheet
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Examination Datasheet Report</h2>
+
+<p>
+    @Html.ActionLink("Back to create", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Group)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Teacher.Course)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Teacher)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvarageScore)
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.Group.name)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Teacher.Course.name)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Teacher.Person.firstname)
+            @Html.DisplayFor(model => model.Teacher.Person.lastname)
+            @Html.DisplayFor(model => model.Teacher.Person.middlename)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.AvarageScore)
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("№")
+        </th>
+        <th>
+            @Html.DisplayName("Student")
+        </th>
+        <th>
+            @Html.DisplayName("Record book")
+        </th>
+        <th>
+            @Html.DisplayName("Score")
+        </th>
+        <th>
+            @Html.DisplayName("Date")
+        </th>
+    </tr>
+
+    @foreach (var item in Model.AcademicProgresses)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.Person.firstname)
+                @Html.DisplayFor(modelItem => item.Student.Person.lastname)
+                @Html.DisplayFor(modelItem => item.Student.Person.middlename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.RecordBook.number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+        </tr>
+    }
+
+</table>

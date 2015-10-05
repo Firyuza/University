@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/underscore")
 
     <script type="text/javascript">
         var appInsights=window.appInsights||function(config){
@@ -27,13 +28,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("University", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Students", "Index", "Students")</li>
+                    <li>@Html.ActionLink("Teachers", "Index", "Teachers")</li>
+                    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+                    <li>@Html.ActionLink("Schedule", "Index", "Schedules")</li>
+                    <li>@Html.ActionLink("Academic Progress", "Index", "AcademicProgresses")</li>
+                    <li>@Html.ActionLink("Examination Datasheet", "Index", "ExaminationDatasheets")</li>
+                    <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
+                    <li>@Html.ActionLink("Positions", "Index", "Positions")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

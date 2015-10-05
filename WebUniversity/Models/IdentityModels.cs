@@ -31,11 +31,6 @@ namespace WebUniversity.Models
             return new ApplicationDbContext();
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            throw new UnintentionalCodeFirstException();
-        }
-
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
@@ -49,5 +44,7 @@ namespace WebUniversity.Models
         public System.Data.Entity.DbSet<WebUniversity.Models.Course> Courses { get; set; }
 
         public System.Data.Entity.DbSet<WebUniversity.Models.Schedule> Schedules { get; set; }
+
+        public System.Data.Entity.DbSet<WebUniversity.Models.AcademicProgress> AcademicProgresses { get; set; }
     }
 }

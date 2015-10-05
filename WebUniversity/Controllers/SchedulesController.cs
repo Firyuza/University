@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -54,6 +55,11 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
+                SetRelativeEntities(schedule);
+
+                db.Groups.Attach(schedule.Group);
+                db.Teachers.Attach(schedule.Teacher);
+
                 db.Schedules.Add(schedule);
                 db.SaveChanges();
 
@@ -94,7 +100,10 @@ namespace WebUniversity.Controllers
                 var editingSchedule = db.Schedules.Find(schedule.id);
 
                 SetRelativeEntities(editingSchedule, schedule);
+                editingSchedule.day = schedule.day;
                 
+                db.Schedules.AddOrUpdate(editingSchedule);
+
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -143,6 +152,10 @@ namespace WebUniversity.Controllers
                 .ToList();
             ViewBag.Group = new SelectList(groups, "id", "name");
 
+            var courses = db.Courses
+               .ToList();
+            ViewBag.Course = new SelectList(courses, "id", "name");
+
             var teachers = db.Teachers
                 .ToList()
                 .Select(s => new
@@ -160,6 +173,15 @@ namespace WebUniversity.Controllers
 
             var teacher = db.Teachers.Find(newSchedule.Teacher.id);
             oldSchedule.Teacher = teacher;
+        }
+
+        private void SetRelativeEntities(Schedule schedule)
+        {
+            var group = db.Groups.Find(schedule.Group.id);
+            schedule.Group = group;
+
+            var teacher = db.Teachers.Find(schedule.Teacher.id);
+            schedule.Teacher = teacher;
         }
     }
 }

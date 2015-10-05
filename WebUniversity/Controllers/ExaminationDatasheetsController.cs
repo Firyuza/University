@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
@@ -26,13 +27,30 @@ namespace WebUniversity.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                var report = new ExaminationDatasheet();
 
-                return RedirectToAction("Index");
+                report.Group = db.Groups.Find(model.GroupId);
+                report.Teacher = db.Teachers.Find(model.TeacherId);
+
+                report.AcademicProgresses =
+                    db.AcademicProgresses
+                    .Where(
+                        x =>
+                            x.Student.Group.id == model.GroupId && x.Teacher.Course.id == model.CourseId &&
+                            x.Teacher.id == model.TeacherId)
+                            .ToList();
+
+                if (report.AcademicProgresses.Count() != 0)
+                {
+                    report.AvarageScore = report.AcademicProgresses.Sum(s => s.score).Value/
+                                          report.AcademicProgresses.Count();
+                }
+
+                return View("Report", report);
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
 
@@ -51,15 +69,17 @@ namespace WebUniversity.Controllers
 
         public ActionResult GetCoursesByGroup(long id)
         {
-            var courses = db.Schedules.Where(x => x.Group.id == id)
-               .Select(s => new 
-               {
-                   CourseId = s.Teacher.Course.id,
-                   Name = s.Teacher.Course.name,
-                   TeacherId = s.Teacher.id,
-                   TeacherName = s.Teacher.Person.firstname + " " + s.Teacher.Person.lastname + " " + s.Teacher.Person.middlename
-               })
-               .ToList();
+            var courses = db.Schedules
+                .Where(x => x.Group.id == id)
+                .Include(s => s.Teacher)
+                .Select(s => new
+                {
+                    CourseId = s.Teacher.Course.id,
+                    Name = s.Teacher.Course.name,
+                    TeacherId = s.Teacher.id,
+                    TeacherName = s.Teacher.Person.firstname + " " + s.Teacher.Person.lastname + " " + s.Teacher.Person.middlename
+                })
+                .ToList();
 
             return Json(courses, JsonRequestBehavior.AllowGet);
         }

@@ -29,6 +29,12 @@ namespace WebUniversity
 
             bundles.Add(new ScriptBundle("~/bundles/report").Include(
                 "~/Scripts/report-data.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/academic").Include(
+                "~/Scripts/academic-data.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/underscore").Include(
+                        "~/Scripts/underscore-min.js"));
         }
     }
 }

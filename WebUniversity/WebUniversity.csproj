@@ -182,6 +182,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AcademicProgressesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Models\DAL\UniversityContext.cs" />
     <Compile Include="Models\DAL\UniversityInitializer.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\ExaminationDatasheet.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -222,6 +224,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\academic-data.js" />
     <Content Include="Scripts\ai.0.15.0-build46802.js" />
     <Content Include="Scripts\ai.0.15.0-build46802.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -241,6 +244,7 @@
     <Content Include="Scripts\report-data.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -313,6 +317,12 @@
     <Content Include="Views\Schedules\Details.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
     <Content Include="Views\Schedules\Index.cshtml" />
+    <Content Include="Views\AcademicProgresses\Create.cshtml" />
+    <Content Include="Views\AcademicProgresses\Delete.cshtml" />
+    <Content Include="Views\AcademicProgresses\Details.cshtml" />
+    <Content Include="Views\AcademicProgresses\Edit.cshtml" />
+    <Content Include="Views\AcademicProgresses\Index.cshtml" />
+    <Content Include="Views\ExaminationDatasheets\Report.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
