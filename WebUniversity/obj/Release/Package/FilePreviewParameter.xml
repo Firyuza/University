@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="my-university" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\firiuza\.shigapova\\documents\\visual\ studio\ 2013\\Projects\\WebUniversity\\WebUniversity\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\firiuza\.shigapova\\documents\\visual\ studio\ 2013\\Projects\\WebUniversity\\WebUniversity\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Server=tcp:t7s720ibfn.database.windows.net,1433;Database=MyDB;User ID=firyuza@t7s720ibfn;Password=QazWsx123;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\firiuza\.shigapova\\documents\\visual\ studio\ 2013\\Projects\\WebUniversity\\WebUniversity\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

@@ -1,0 +1,52 @@
+﻿@model WebUniversity.Models.Teacher
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Teacher</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.firstname) <br />
+            @Html.DisplayNameFor(model => model.Person.lastname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.firstname) <br />
+            @Html.DisplayFor(model => model.Person.lastname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Position.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Position.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -28,10 +28,13 @@ namespace WebUniversity
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/report").Include(
-                "~/Scripts/report-data.js"));
+                "~/Scripts/data/report-data.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/academic").Include(
-                "~/Scripts/academic-data.js"));
+                "~/Scripts/data/academic-data.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/schedule").Include(
+                "~/Scripts/data/schedule-data.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/underscore").Include(
                         "~/Scripts/underscore-min.js"));

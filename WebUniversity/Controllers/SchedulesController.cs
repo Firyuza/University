@@ -137,6 +137,20 @@ namespace WebUniversity.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult GetTeachersByCourse(long id)
+        {
+            var teachers = db.Teachers
+                .Where(x => x.Course.id == id)
+                .Select(s => new
+                {
+                    s.id,
+                    name = s.Person.firstname + " " + s.Person.lastname + " " + s.Person.middlename
+                })
+                .ToList();
+
+            return Json(teachers, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -154,16 +168,12 @@ namespace WebUniversity.Controllers
 
             var courses = db.Courses
                .ToList();
-            ViewBag.Course = new SelectList(courses, "id", "name");
 
-            var teachers = db.Teachers
-                .ToList()
-                .Select(s => new
-                {
-                    s.id,
-                    name = s.Person.firstname + " " + s.Person.lastname + " " + s.Person.middlename
-                });
-            ViewBag.Teacher = new SelectList(teachers, "id", "name");
+            courses.Insert(0, new Course()
+            {
+                name = "--Select--"
+            });
+            ViewBag.Course = new SelectList(courses, "id", "name");
         }
 
         private void SetRelativeEntities(Schedule oldSchedule, Schedule newSchedule)

@@ -39,8 +39,6 @@ namespace WebUniversity.Controllers
         // GET: AcademicProgresses/Create
         public ActionResult Create()
         {
-            GetRelativeEntities();
-
             return View();
         }
 
@@ -158,6 +156,19 @@ namespace WebUniversity.Controllers
             return Json(teachers, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetCoursesByGroup(long id)
+        {
+            var courses = db.Schedules
+                .Where(x => x.Group.id == id)
+                .Select(s => new 
+                {
+                    s.Teacher.Course.id,
+                    s.Teacher.Course.name
+                })
+                .ToList();
+
+            return Json(courses, JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -165,12 +176,6 @@ namespace WebUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private void GetRelativeEntities()
-        {
-            var courses = db.Courses.ToList();
-            ViewBag.Course = new SelectList(courses, "id", "name");
         }
 
         private void SetRelativeEntities(AcademicProgress oldProgress, AcademicProgress newProgress)

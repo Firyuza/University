@@ -7,6 +7,7 @@
     $('#teacher-block').hide();
 
     function getCourseByGroup(id) {
+        $('#course').empty();
         $.get('ExaminationDatasheets/GetCoursesByGroup', { Id: id }).done(function (data) {
             courses = _.uniq(data, function (item, key, a) {
                 return item.Name;
@@ -27,6 +28,7 @@
     }
 
     function getTeacherByGroup(id) {
+        $('#teacher').empty();
         $('#teacher').append($('<option>').text('--Select--'));
 
         var filteredCourses = _.filter(courses, function (item, key, a) {

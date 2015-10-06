@@ -42,7 +42,14 @@ namespace WebUniversity.Controllers
 
                 if (report.AcademicProgresses.Count() != 0)
                 {
-                    report.AvarageScore = report.AcademicProgresses.Sum(s => s.score).Value/
+                    double? sum = 0;
+                    foreach (var s in report.AcademicProgresses)
+                    {
+                        var d = s.score;
+                        if (d.HasValue)
+                            sum += d.Value;
+                    }
+                    report.AvarageScore = sum.Value/
                                           report.AcademicProgresses.Count();
                 }
 
