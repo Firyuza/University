@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Shared.Models.Entities;
+using Storage;
 using WebUniversity.Models;
 
 namespace WebUniversity.Controllers

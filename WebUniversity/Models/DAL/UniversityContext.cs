@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Shared.Models.Entities;
 
 namespace WebUniversity.Models.DAL
 {

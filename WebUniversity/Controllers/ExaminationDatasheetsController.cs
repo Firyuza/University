@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Razor;
+using Shared.Models.Entities;
+using Storage;
 using WebUniversity.Models;
 using WebUniversity.ViewModel;
 

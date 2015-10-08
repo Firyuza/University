@@ -66,3 +66,17 @@ c:\users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\W
 c:\users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\obj\Debug\WebUniversity.csprojResolveAssemblyReference.cache
 c:\users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\obj\Debug\WebUniversity.dll
 c:\users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\obj\Debug\WebUniversity.pdb
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\BusinessLogic.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Shared.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Castle.Windsor.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Castle.Core.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\BusinessLogic.pdb
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Shared.pdb
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Castle.Windsor.xml
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Castle.Core.xml
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Storage.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\Storage.pdb
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\System.Net.Http.Formatting.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\System.Web.Http.dll
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\System.Net.Http.Formatting.xml
+C:\Users\firiuza.shigapova\documents\visual studio 2013\Projects\WebUniversity\WebUniversity\bin\System.Web.Http.xml

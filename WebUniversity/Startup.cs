@@ -9,6 +9,7 @@ namespace WebUniversity
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+
         }
     }
 }

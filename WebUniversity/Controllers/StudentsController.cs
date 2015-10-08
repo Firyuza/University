@@ -1,33 +1,36 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using WebUniversity.Models;
-
-namespace WebUniversity.Controllers
+﻿namespace WebUniversity.Controllers
 {
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Shared.Models.Interfaces;
+
     public class StudentsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IStudentService studentService;
+        private IGroupService groupService;
+
+        public StudentsController(IStudentService ss, IGroupService gs)
+        {
+            studentService = ss;
+            groupService = gs;
+        }
 
         // GET: Students
         public ActionResult Index()
         {
-            return View(db.Students.ToList());
+            return View(studentService.GetAll());
         }
 
         // GET: Students/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
+            var student = studentService.Get(id);
+
             if (student == null)
             {
                 return HttpNotFound();
             }
+
             return View(student);
         }
 
@@ -49,20 +52,15 @@ namespace WebUniversity.Controllers
             // Make full Student Entity after posting
             SetRelativeEntities(student);
 
-            db.Students.Add(student);
-            db.SaveChanges();
+            studentService.Add(student);
+            
             return RedirectToAction("Index");
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Student student = db.Students.Find(id);
+            var student = studentService.Get(id);
 
             if (student == null)
             {
@@ -83,21 +81,18 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
+                studentService.Edit(student);
+                return RedirectToAction("Index");
+
             }
 
             return RedirectToAction("Index");
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
+            var student = studentService.Get(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -110,30 +105,19 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+            studentService.Remove(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void SetRelativeEntities(Student student)
         {
-            var group = db.Groups.Find(student.Group.id);
+            var group = groupService.Get(student.Group.id);
             student.Group = group;
         }
 
         private void GetGroupList()
         {
-            var groups = db.Groups.ToList();
+            var groups = groupService.GetAll();
             ViewBag.Group = new SelectList(groups, "id", "name");
         }
     }
