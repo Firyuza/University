@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Shared.Models.Entities.Teacher>
+﻿@using System.ComponentModel.DataAnnotations
+@using Shared.Models.Entities
+@model IEnumerable<Shared.Models.Entities.Teacher>
 
 @{
     ViewBag.Title = "Teachers";
@@ -27,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Position.name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Course.name)
+            Course
         </th>
         <th></th>
     </tr>
@@ -47,10 +49,13 @@
             @Html.DisplayFor(modelItem => item.Department.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Course.name)
+            @Html.DisplayFor(modelItem => item.Position.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Position.name)
+            @foreach (var course in item.Courses)
+            {
+                @Html.Display(course.name)
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

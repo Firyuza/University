@@ -2,11 +2,9 @@
 
     var groups,
         students,
-        teachers,
         courses;
 
     $('#course-block').hide();
-    $('#teacher-block').hide();
     $('#student-block').hide();
     $('#score-block').hide();
     $('#date-block').hide();
@@ -41,25 +39,6 @@
                 });
             } else {
                 $('#student').append($('<option>').text('No student'));
-            }
-        }).fail(function () {
-            alert('Error!Please, try again!');
-        });
-    }
-
-    function getTeachersByCourse(id) {
-        $('#teacher').empty();
-        $.get('../../AcademicProgresses/GetTeachersByCourse', { Id: id }).done(function (data) {
-            teachers = data;
-
-            if (teachers.length > 0) {
-                $('#teacher').append($('<option>').text('--Select--'));
-
-                $.each(teachers, function (i, value) {
-                    $('#teacher').append($('<option>').text(value.name).attr('value', value.id));
-                });
-            } else {
-                $('#teacher').append($('<option>').text('No teacher'));
             }
         }).fail(function () {
             alert('Error!Please, try again!');
@@ -102,12 +81,8 @@
     $('select#course').change(function () {
         var id = $(this).val();
 
-        $('#teacher-block').show();
-
         $('#score-block').show();
 
         $('#date-block').show();
-
-        getTeachersByCourse(id);
     });
 });

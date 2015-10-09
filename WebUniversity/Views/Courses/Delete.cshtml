@@ -1,4 +1,4 @@
-﻿@model WebUniversity.Models.Course
+﻿@model Shared.Models.Entities.Course
 
 @{
     ViewBag.Title = "Delete";
@@ -17,6 +17,15 @@
 
         <dd>
             @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Person.lastname)
+            @Html.DisplayFor(model => model.Teacher.Person.firstname)
         </dd>
 
     </dl>

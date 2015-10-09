@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Shared.Models.Entities;
-using Storage;
-using WebUniversity.Models;
-
-namespace WebUniversity.Controllers
+﻿namespace WebUniversity.Controllers
 {
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Storage;
+
     public class PositionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

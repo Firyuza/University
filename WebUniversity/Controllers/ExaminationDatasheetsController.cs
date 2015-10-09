@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using System.Web.Razor;
-using Shared.Models.Entities;
-using Storage;
-using WebUniversity.Models;
-using WebUniversity.ViewModel;
-
-namespace WebUniversity.Controllers
+﻿namespace WebUniversity.Controllers
 {
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Storage;
+    using ViewModel;
+
     public class ExaminationDatasheetsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -30,16 +24,16 @@ namespace WebUniversity.Controllers
             try
             {
                 var report = new ExaminationDatasheet();
-
+                
                 report.Group = db.Groups.Find(model.GroupId);
-                report.Teacher = db.Teachers.Find(model.TeacherId);
-
+                report.Course = db.Courses.Find(model.CourseId);
+                
                 report.AcademicProgresses =
                     db.AcademicProgresses
                     .Where(
                         x =>
-                            x.Student.Group.id == model.GroupId && x.Teacher.Course.id == model.CourseId &&
-                            x.Teacher.id == model.TeacherId)
+                            x.Student.Group.id == model.GroupId && 
+                            x.Course.id == model.CourseId)
                             .ToList();
 
                 if (report.AcademicProgresses.Count() != 0)
@@ -54,7 +48,7 @@ namespace WebUniversity.Controllers
                     report.AvarageScore = sum.Value/
                                           report.AcademicProgresses.Count();
                 }
-
+                
                 return View("Report", report);
             }
             catch
@@ -80,13 +74,11 @@ namespace WebUniversity.Controllers
         {
             var courses = db.Schedules
                 .Where(x => x.Group.id == id)
-                .Include(s => s.Teacher)
+                .Include(s => s.Course)
                 .Select(s => new
                 {
-                    CourseId = s.Teacher.Course.id,
-                    Name = s.Teacher.Course.name,
-                    TeacherId = s.Teacher.id,
-                    TeacherName = s.Teacher.Person.firstname + " " + s.Teacher.Person.lastname + " " + s.Teacher.Person.middlename
+                    CourseId = s.Course.id,
+                    Name = s.Course.name + " - " + s.Course.Teacher.Person.firstname + " " + s.Course.Teacher.Person.lastname + " " + s.Course.Teacher.Person.middlename
                 })
                 .ToList();
 

@@ -60,16 +60,6 @@
             positions.ForEach(x => context.Positions.Add(x));
             context.SaveChanges();
 
-            var courses = new List<Course>
-            {
-                new Course{name="Mathematics"},
-                new Course{name="Informatics"},
-                new Course{name="English"},
-                new Course{name="Art"}
-            };
-            courses.ForEach(s => context.Courses.Add(s));
-            context.SaveChanges();
-
             var students = new List<Student>
             {
                 new Student{Person = people[0], RecordBook = recordBooks[0], Group = groups[0]},
@@ -83,23 +73,32 @@
 
             var teachers = new List<Teacher>
             {
-                new Teacher{Person = people[4], Course = courses[0], Department = departments[0], Position = positions[0]},
-                new Teacher{Person = people[5], Course = courses[0], Department = departments[0], Position = positions[1]},
-                new Teacher{Person = people[6], Course = courses[0], Department = departments[1], Position = positions[1]},
-                new Teacher{Person = people[7], Course = courses[0], Department = departments[1], Position = positions[1]}
+                new Teacher{Person = people[4], Department = departments[0], Position = positions[0]},
+                new Teacher{Person = people[5], Department = departments[0], Position = positions[1]},
+                new Teacher{Person = people[6], Department = departments[1], Position = positions[1]},
+                new Teacher{Person = people[7], Department = departments[1], Position = positions[1]}
             };
 
             teachers.ForEach(s => context.Teachers.Add(s));
             context.SaveChanges();
 
+            var courses = new List<Course>
+            {
+                new Course{name="Mathematics", Teacher = teachers[0]},
+                new Course{name="Informatics", Teacher = teachers[1]},
+                new Course{name="English", Teacher = teachers[2]},
+                new Course{name="Art", Teacher = teachers[3]}
+            };
+            courses.ForEach(s => context.Courses.Add(s));
+            context.SaveChanges();
+
             var schedules = new List<Schedule>
             {
-                new Schedule{day = "Monday", Group = groups[0], Teacher = teachers[0]},
-                new Schedule{day = "Thuesday", Group = groups[0], Teacher = teachers[1]},
-                new Schedule{day = "Friday", Group = groups[1], Teacher = teachers[2]},
-                new Schedule{day = "Friday", Group = groups[1], Teacher = teachers[3]}
+                new Schedule{day = "Monday", Group = groups[0], Course = courses[0]},
+                new Schedule{day = "Thuesday", Group = groups[0], Course = courses[1]},
+                new Schedule{day = "Friday", Group = groups[1], Course = courses[2]},
+                new Schedule{day = "Friday", Group = groups[1], Course = courses[3]}
             };
-
             schedules.ForEach(s => context.Schedules.Add(s));
             context.SaveChanges();
         }

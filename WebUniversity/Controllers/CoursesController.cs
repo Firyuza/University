@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Shared.Models.Entities;
 using Storage;
-using WebUniversity.Models;
 
 namespace WebUniversity.Controllers
 {
@@ -40,6 +35,8 @@ namespace WebUniversity.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
+            FillViewBag();
+
             return View();
         }
 
@@ -48,11 +45,15 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name")] Course course)
+        public ActionResult Create([Bind(Include = "id,name, Teacher")] Course course)
         {
             if (ModelState.IsValid)
             {
+                SetRelativeEntities(course);
+                db.Teachers.Attach(course.Teacher);
+
                 db.Courses.Add(course);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -67,11 +68,16 @@ namespace WebUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Course course = db.Courses.Find(id);
+
             if (course == null)
             {
                 return HttpNotFound();
             }
+
+            FillViewBag();
+
             return View(course);
         }
 
@@ -84,8 +90,14 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(course).State = EntityState.Modified;
+                var editingCourse = db.Courses.Find(course.id);
+
+                SetRelativeEntities(editingCourse, course);
+                editingCourse.name = course.name;
+
+                db.Courses.AddOrUpdate(editingCourse);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(course);
@@ -124,6 +136,31 @@ namespace WebUniversity.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void FillViewBag()
+        {
+            var teachers = db.Teachers
+                .Select(s => new 
+                {
+                    s.id,
+                    name = s.Person.lastname + " " + s.Person.firstname
+                })
+                .ToList();
+
+            ViewBag.Teachers = new SelectList(teachers, "id", "name");
+        }
+
+        private void SetRelativeEntities(Course course)
+        {
+            var teacher = db.Teachers.Find(course.Teacher.id);
+            course.Teacher = teacher;
+        }
+
+        private void SetRelativeEntities(Course oldCourse, Course newCourse)
+        {
+            var teacher = db.Teachers.Find(newCourse.Teacher.id);
+            oldCourse.Teacher = teacher;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Shared.Models.Entities
     {
         public Group Group { get; set; }
 
-        public Teacher Teacher { get; set; }
+        public Course Course { get; set; }
 
         public double AvarageScore { get; set; }
 

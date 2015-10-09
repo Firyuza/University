@@ -19,10 +19,10 @@
             @Html.DisplayNameFor(model => model.Student.Group)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Teacher.Course)
+            @Html.DisplayNameFor(model => model.Course)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Teacher)
+            @Html.DisplayNameFor(model => model.Course.Teacher)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.score)
@@ -43,11 +43,11 @@
             @Html.DisplayFor(modelItem => item.Student.Group.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Teacher.Course.name)
+            @Html.DisplayFor(modelItem => item.Course.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Teacher.Person.firstname)
-            @Html.DisplayFor(modelItem => item.Teacher.Person.lastname)
+            @Html.DisplayFor(modelItem => item.Course.Teacher.Person.firstname)
+            @Html.DisplayFor(modelItem => item.Course.Teacher.Person.lastname)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.score)

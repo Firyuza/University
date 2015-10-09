@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebSockets;
 using Shared.Models.Entities;
 using Storage;
 using WebUniversity.Models;
@@ -52,7 +53,7 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,Person,Department,Course,Position")] Teacher teacher)
+        public ActionResult Create([Bind(Include = "id,Person,Department,Position")] Teacher teacher)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +92,7 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,Person,Department,Course,Position")] Teacher teacher)
+        public ActionResult Edit([Bind(Include = "id,Person,Department,Position")] Teacher teacher)
         {
             if (ModelState.IsValid)
             {
@@ -147,9 +148,6 @@ namespace WebUniversity.Controllers
 
             var positions = db.Positions.ToList();
             ViewBag.Position = new SelectList(positions, "id", "name");
-
-            var courses = db.Courses.ToList();
-            ViewBag.Course = new SelectList(courses, "id", "name");
         }
 
         private void SetRelativeEntities(Teacher teacher)
@@ -159,9 +157,6 @@ namespace WebUniversity.Controllers
 
             var position = db.Positions.Find(teacher.Position.id);
             teacher.Position = position;
-
-            var course = db.Courses.Find(teacher.Course.id);
-            teacher.Course = course;
         }
     }
 }

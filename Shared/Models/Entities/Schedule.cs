@@ -10,7 +10,7 @@
         public virtual Group Group { get; set; }
 
         [Display(Name = "Teacher")]
-        public virtual Teacher Teacher { get; set; }
+        public virtual Course Course { get; set; }
 
         [Display(Name = "Day")]
         public string day { get; set; }

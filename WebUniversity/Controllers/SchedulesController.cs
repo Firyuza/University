@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Shared.Models.Entities;
-using Storage;
-using WebUniversity.Models;
-
-namespace WebUniversity.Controllers
+﻿namespace WebUniversity.Controllers
 {
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Storage;
+
     public class SchedulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -53,14 +47,14 @@ namespace WebUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,day, Group, Teacher")] Schedule schedule)
+        public ActionResult Create([Bind(Include = "id,day, Group, Course")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
                 SetRelativeEntities(schedule);
 
                 db.Groups.Attach(schedule.Group);
-                db.Teachers.Attach(schedule.Teacher);
+                db.Courses.Attach(schedule.Course);
 
                 db.Schedules.Add(schedule);
                 db.SaveChanges();
@@ -141,12 +135,12 @@ namespace WebUniversity.Controllers
 
         public ActionResult GetTeachersByCourse(long id)
         {
-            var teachers = db.Teachers
-                .Where(x => x.Course.id == id)
+            var teachers = db.Courses
+                .Where(x => x.id == id)
                 .Select(s => new
                 {
                     s.id,
-                    name = s.Person.firstname + " " + s.Person.lastname + " " + s.Person.middlename
+                    name = s.Teacher.Person.firstname + " " + s.Teacher.Person.lastname + " " + s.Teacher.Person.middlename
                 })
                 .ToList();
 
@@ -169,6 +163,11 @@ namespace WebUniversity.Controllers
             ViewBag.Group = new SelectList(groups, "id", "name");
 
             var courses = db.Courses
+                .Select(s => new Course()
+                {
+                    id = s.id,
+                    name = s.name + " - " + s.Teacher.Person.lastname + " " + s.Teacher.Person.firstname
+                })
                .ToList();
 
             courses.Insert(0, new Course()
@@ -183,8 +182,8 @@ namespace WebUniversity.Controllers
             var group = db.Groups.Find(newSchedule.Group.id);
             oldSchedule.Group = group;
 
-            var teacher = db.Teachers.Find(newSchedule.Teacher.id);
-            oldSchedule.Teacher = teacher;
+            var course = db.Courses.Find(newSchedule.Course.id);
+            oldSchedule.Course = course;
         }
 
         private void SetRelativeEntities(Schedule schedule)
@@ -192,8 +191,8 @@ namespace WebUniversity.Controllers
             var group = db.Groups.Find(schedule.Group.id);
             schedule.Group = group;
 
-            var teacher = db.Teachers.Find(schedule.Teacher.id);
-            schedule.Teacher = teacher;
+            var course = db.Courses.Find(schedule.Course.id);
+            schedule.Course = course;
         }
     }
 }

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Shared.Models.Entities;
-using Storage;
-using WebUniversity.Models;
-
-namespace WebUniversity.Controllers
+﻿namespace WebUniversity.Controllers
 {
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Storage;
+
     public class AcademicProgressesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -56,7 +50,7 @@ namespace WebUniversity.Controllers
                 SetRelativeEntities(academicProgress);
 
                 db.Students.Attach(academicProgress.Student);
-                db.Teachers.Attach(academicProgress.Teacher);
+                db.Teachers.Attach(academicProgress.Course.Teacher);
 
                 db.AcademicProgresses.Add(academicProgress);
                 db.SaveChanges();
@@ -144,28 +138,14 @@ namespace WebUniversity.Controllers
             return Json(students, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetTeachersByCourse(long id)
-        {
-            var teachers = db.Teachers
-                .Where(x => x.Course.id == id)
-                .Select(s => new
-                {
-                    s.id,
-                    name = s.Person.firstname + " " + s.Person.lastname + " " + s.Person.middlename
-                })
-                .ToList();
-
-            return Json(teachers, JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult GetCoursesByGroup(long id)
         {
             var courses = db.Schedules
                 .Where(x => x.Group.id == id)
                 .Select(s => new 
                 {
-                    s.Teacher.Course.id,
-                    s.Teacher.Course.name
+                    id = s.Course.id,
+                    name = s.Course.name + " - " + s.Course.Teacher.Person.lastname + " " + s.Course.Teacher.Person.firstname
                 })
                 .ToList();
 
@@ -185,8 +165,8 @@ namespace WebUniversity.Controllers
             var group = db.Students.Find(newProgress.Student.id);
             oldProgress.Student = group;
 
-            var teacher = db.Teachers.Find(newProgress.Teacher.id);
-            oldProgress.Teacher = teacher;
+            var teacher = db.Teachers.Find(newProgress.Course.Teacher.id);
+            oldProgress.Course.Teacher = teacher;
         }
 
         private void SetRelativeEntities(AcademicProgress academicProgress)
@@ -194,8 +174,8 @@ namespace WebUniversity.Controllers
             var student = db.Students.Find(academicProgress.Student.id);
             academicProgress.Student = student;
 
-            var teacher = db.Teachers.Find(academicProgress.Teacher.id);
-            academicProgress.Teacher = teacher;
+            var course = db.Courses.Find(academicProgress.Course.id);
+            academicProgress.Course = course;
         }
     }
 }
