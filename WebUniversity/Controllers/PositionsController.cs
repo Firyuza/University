@@ -1,34 +1,33 @@
 ﻿namespace WebUniversity.Controllers
 {
-    using System.Data.Entity;
-    using System.Linq;
-    using System.Net;
     using System.Web.Mvc;
     using Shared.Models.Entities;
-    using Storage;
+    using Shared.Models.Interfaces;
 
     public class PositionsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IPositionService positionService;
 
+        public PositionsController(IPositionService ps)
+        {
+            positionService = ps;
+        }
         // GET: Positions
         public ActionResult Index()
         {
-            return View(db.Positions.ToList());
+            return View(positionService.GetAll());
         }
 
         // GET: Positions/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Position position = db.Positions.Find(id);
+            Position position = positionService.Get(id);
+
             if (position == null)
             {
                 return HttpNotFound();
             }
+
             return View(position);
         }
 
@@ -47,8 +46,8 @@
         {
             if (ModelState.IsValid)
             {
-                db.Positions.Add(position);
-                db.SaveChanges();
+                positionService.Add(position);
+
                 return RedirectToAction("Index");
             }
 
@@ -56,17 +55,15 @@
         }
 
         // GET: Positions/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Position position = db.Positions.Find(id);
+            Position position = positionService.Get(id);
+
             if (position == null)
             {
                 return HttpNotFound();
             }
+
             return View(position);
         }
 
@@ -79,25 +76,24 @@
         {
             if (ModelState.IsValid)
             {
-                db.Entry(position).State = EntityState.Modified;
-                db.SaveChanges();
+                positionService.Edit(position);
+
                 return RedirectToAction("Index");
             }
+
             return View(position);
         }
 
         // GET: Positions/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Position position = db.Positions.Find(id);
+            Position position = positionService.Get(id);
+
             if (position == null)
             {
                 return HttpNotFound();
             }
+
             return View(position);
         }
 
@@ -106,19 +102,9 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Position position = db.Positions.Find(id);
-            db.Positions.Remove(position);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            positionService.Remove(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }

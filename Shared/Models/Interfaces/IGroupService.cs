@@ -12,5 +12,7 @@
         void Add(Group group);
 
         void Remove(long id);
+
+        void Edit(Group group);
     }
 }

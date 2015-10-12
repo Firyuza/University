@@ -37,7 +37,7 @@
         // GET: Students/Create
         public ActionResult Create()
         {
-            GetGroupList();
+            FillViewBag();
 
             return View();
         }
@@ -49,9 +49,6 @@
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,Person,Recordbook,Group")] Student student)
         {
-            // Make full Student Entity after posting
-            SetRelativeEntities(student);
-
             studentService.Add(student);
             
             return RedirectToAction("Index");
@@ -67,7 +64,7 @@
                 return HttpNotFound();
             }
 
-            GetGroupList();
+            FillViewBag();
 
             return View(student);
         }
@@ -109,13 +106,7 @@
             return RedirectToAction("Index");
         }
 
-        private void SetRelativeEntities(Student student)
-        {
-            var group = groupService.Get(student.Group.id);
-            student.Group = group;
-        }
-
-        private void GetGroupList()
+        private void FillViewBag()
         {
             var groups = groupService.GetAll();
             ViewBag.Group = new SelectList(groups, "id", "name");

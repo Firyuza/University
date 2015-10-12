@@ -18,5 +18,7 @@ namespace Shared.Models.Interfaces
         void Remove(long id);
 
         void Edit(Student student);
+
+        IQueryable<Student> GetByGroup(long id);
     }
 }

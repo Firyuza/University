@@ -32,6 +32,8 @@ namespace BusinessLogic
 
         public void Add(Student student)
         {
+            SetRelativeEntities(student);
+
             db.Students.Add(student);
             db.SaveChanges();
         }
@@ -39,19 +41,37 @@ namespace BusinessLogic
         public void Remove(long id)
         {
             var student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+
+            if (student != null)
+            {
+                db.Students.Remove(student);
+                db.SaveChanges();
+            }
         }
 
         public void Edit(Student student)
         {
+            SetRelativeEntities(student);
+
             db.Entry(student).State = EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public IQueryable<Student> GetByGroup(long id)
+        {
+            return db.Students
+                .Where(x => x.Group.id == id);
         }
 
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        private void SetRelativeEntities(Student student)
+        {
+            var group = db.Groups.Find(student.Group.id);
+            student.Group = group;
         }
     }
 }

@@ -52,8 +52,14 @@
     <Compile Include="Models\Entities\Schedule.cs" />
     <Compile Include="Models\Entities\Student.cs" />
     <Compile Include="Models\Entities\Teacher.cs" />
+    <Compile Include="Models\Interfaces\IAcademicProgressService.cs" />
+    <Compile Include="Models\Interfaces\ICourseService.cs" />
+    <Compile Include="Models\Interfaces\IDepartmentService.cs" />
     <Compile Include="Models\Interfaces\IGroupService.cs" />
+    <Compile Include="Models\Interfaces\IPositionService.cs" />
+    <Compile Include="Models\Interfaces\IScheduleService.cs" />
     <Compile Include="Models\Interfaces\IStudentService.cs" />
+    <Compile Include="Models\Interfaces\ITeacherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

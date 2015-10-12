@@ -1,34 +1,38 @@
-﻿using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using Shared.Models.Entities;
-using Storage;
+﻿using System.Linq;
 
 namespace WebUniversity.Controllers
 {
+    using System.Web.Mvc;
+    using Shared.Models.Entities;
+    using Shared.Models.Interfaces;
+
     public class CoursesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ICourseService courseService;
+        private ITeacherService teacherService;
+
+        public CoursesController(ICourseService cs, ITeacherService ts)
+        {
+            courseService = cs;
+            teacherService = ts;
+        }
 
         // GET: Courses
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            return View(courseService.GetAll());
         }
 
         // GET: Courses/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
+            Course course = courseService.Get(id);
+
             if (course == null)
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -49,12 +53,8 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                SetRelativeEntities(course);
-                db.Teachers.Attach(course.Teacher);
+                courseService.Add(course);
 
-                db.Courses.Add(course);
-
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -62,14 +62,9 @@ namespace WebUniversity.Controllers
         }
 
         // GET: Courses/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Course course = db.Courses.Find(id);
+            Course course = courseService.Get(id);
 
             if (course == null)
             {
@@ -90,13 +85,7 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var editingCourse = db.Courses.Find(course.id);
-
-                SetRelativeEntities(editingCourse, course);
-                editingCourse.name = course.name;
-
-                db.Courses.AddOrUpdate(editingCourse);
-                db.SaveChanges();
+                courseService.Edit(course);
 
                 return RedirectToAction("Index");
             }
@@ -104,17 +93,15 @@ namespace WebUniversity.Controllers
         }
 
         // GET: Courses/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
+            Course course = courseService.Get(id);
+
             if (course == null)
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -123,24 +110,14 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            courseService.Remove(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
 
         public void FillViewBag()
         {
-            var teachers = db.Teachers
+            var teachers = teacherService.GetAll()
                 .Select(s => new 
                 {
                     s.id,
@@ -149,18 +126,6 @@ namespace WebUniversity.Controllers
                 .ToList();
 
             ViewBag.Teachers = new SelectList(teachers, "id", "name");
-        }
-
-        private void SetRelativeEntities(Course course)
-        {
-            var teacher = db.Teachers.Find(course.Teacher.id);
-            course.Teacher = teacher;
-        }
-
-        private void SetRelativeEntities(Course oldCourse, Course newCourse)
-        {
-            var teacher = db.Teachers.Find(newCourse.Teacher.id);
-            oldCourse.Teacher = teacher;
         }
     }
 }

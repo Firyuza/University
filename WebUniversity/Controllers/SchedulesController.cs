@@ -1,36 +1,41 @@
 ﻿namespace WebUniversity.Controllers
 {
-    using System.Data.Entity.Migrations;
     using System.Linq;
-    using System.Net;
     using System.Web.Mvc;
     using Shared.Models.Entities;
-    using Storage;
+    using Shared.Models.Interfaces;
 
     public class SchedulesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IScheduleService scheduleService;
+        private IGroupService groupService;
+        private ICourseService courseService;
+
+        public SchedulesController(IScheduleService ss, IGroupService gs, ICourseService cs)
+        {
+            scheduleService = ss;
+            groupService = gs;
+            courseService = cs;
+        }
 
         // GET: Schedules
         public ActionResult Index()
         {
             GetRelativeEntities();
 
-            return View(db.Schedules.ToList());
+            return View(scheduleService.GetAll());
         }
 
         // GET: Schedules/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Schedule schedule = db.Schedules.Find(id);
+            var schedule = scheduleService.Get(id);
+
             if (schedule == null)
             {
                 return HttpNotFound();
             }
+
             return View(schedule);
         }
 
@@ -51,13 +56,7 @@
         {
             if (ModelState.IsValid)
             {
-                SetRelativeEntities(schedule);
-
-                db.Groups.Attach(schedule.Group);
-                db.Courses.Attach(schedule.Course);
-
-                db.Schedules.Add(schedule);
-                db.SaveChanges();
+                scheduleService.Add(schedule);
 
                 return RedirectToAction("Index");
             }
@@ -66,14 +65,10 @@
         }
 
         // GET: Schedules/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            Schedule schedule = scheduleService.Get(id);
 
-            Schedule schedule = db.Schedules.Find(id);
             if (schedule == null)
             {
                 return HttpNotFound();
@@ -93,14 +88,7 @@
         {
             if (ModelState.IsValid)
             {
-                var editingSchedule = db.Schedules.Find(schedule.id);
-
-                SetRelativeEntities(editingSchedule, schedule);
-                editingSchedule.day = schedule.day;
-                
-                db.Schedules.AddOrUpdate(editingSchedule);
-
-                db.SaveChanges();
+                scheduleService.Edit(schedule);
 
                 return RedirectToAction("Index");
             }
@@ -108,17 +96,15 @@
         }
 
         // GET: Schedules/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Schedule schedule = db.Schedules.Find(id);
+            Schedule schedule = scheduleService.Get(id);
+
             if (schedule == null)
             {
                 return HttpNotFound();
             }
+
             return View(schedule);
         }
 
@@ -127,42 +113,17 @@
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Schedule schedule = db.Schedules.Find(id);
-            db.Schedules.Remove(schedule);
-            db.SaveChanges();
+            scheduleService.Remove(id);
+
             return RedirectToAction("Index");
-        }
-
-        public ActionResult GetTeachersByCourse(long id)
-        {
-            var teachers = db.Courses
-                .Where(x => x.id == id)
-                .Select(s => new
-                {
-                    s.id,
-                    name = s.Teacher.Person.firstname + " " + s.Teacher.Person.lastname + " " + s.Teacher.Person.middlename
-                })
-                .ToList();
-
-            return Json(teachers, JsonRequestBehavior.AllowGet);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void GetRelativeEntities()
         {
-            var groups = db.Groups
-                .ToList();
+            var groups = groupService.GetAll();
             ViewBag.Group = new SelectList(groups, "id", "name");
 
-            var courses = db.Courses
+            var courses = courseService.GetAll()
                 .Select(s => new Course()
                 {
                     id = s.id,
@@ -175,24 +136,6 @@
                 name = "--Select--"
             });
             ViewBag.Course = new SelectList(courses, "id", "name");
-        }
-
-        private void SetRelativeEntities(Schedule oldSchedule, Schedule newSchedule)
-        {
-            var group = db.Groups.Find(newSchedule.Group.id);
-            oldSchedule.Group = group;
-
-            var course = db.Courses.Find(newSchedule.Course.id);
-            oldSchedule.Course = course;
-        }
-
-        private void SetRelativeEntities(Schedule schedule)
-        {
-            var group = db.Groups.Find(schedule.Group.id);
-            schedule.Group = group;
-
-            var course = db.Courses.Find(schedule.Course.id);
-            schedule.Course = course;
         }
     }
 }

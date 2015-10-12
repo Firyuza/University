@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Shared.Models.Entities;
+using Shared.Models.Interfaces;
 using Storage;
 using WebUniversity.Models;
 
@@ -14,26 +15,29 @@ namespace WebUniversity.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDepartmentService departmentService;
+
+        public DepartmentsController(IDepartmentService ds)
+        {
+            departmentService = ds;
+        }
 
         // GET: Departments
         public ActionResult Index()
         {
-            return View(db.Departments.ToList());
+            return View(departmentService.GetAll());
         }
 
         // GET: Departments/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = db.Departments.Find(id);
+            Department department = departmentService.Get(id);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
+
             return View(department);
         }
 
@@ -52,8 +56,8 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
-                db.SaveChanges();
+                departmentService.Add(department);
+                
                 return RedirectToAction("Index");
             }
 
@@ -61,17 +65,15 @@ namespace WebUniversity.Controllers
         }
 
         // GET: Departments/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = db.Departments.Find(id);
+            Department department = departmentService.Get(id);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
+
             return View(department);
         }
 
@@ -84,25 +86,24 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(department).State = EntityState.Modified;
-                db.SaveChanges();
+                departmentService.Edit(department);
+
                 return RedirectToAction("Index");
             }
+
             return View(department);
         }
 
         // GET: Departments/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = db.Departments.Find(id);
+            Department department = departmentService.Get(id);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
+
             return View(department);
         }
 
@@ -111,19 +112,9 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Department department = db.Departments.Find(id);
-            db.Departments.Remove(department);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            departmentService.Remove(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }

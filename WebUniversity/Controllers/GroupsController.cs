@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Shared.Models.Entities;
+using Shared.Models.Interfaces;
 using Storage;
 using WebUniversity.Models;
 
@@ -10,26 +11,28 @@ namespace WebUniversity.Controllers
 {
     public class GroupsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IGroupService groupService;
 
+        public GroupsController(IGroupService gs)
+        {
+            groupService = gs;
+        }
         // GET: Groups
         public ActionResult Index()
         {
-            return View(db.Groups.ToList());
+            return View(groupService.GetAll());
         }
 
         // GET: Groups/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Details(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Group group = db.Groups.Find(id);
+            Group group = groupService.Get(id);
+
             if (group == null)
             {
                 return HttpNotFound();
             }
+
             return View(group);
         }
 
@@ -48,8 +51,8 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Groups.Add(group);
-                db.SaveChanges();
+                groupService.Add(group);
+
                 return RedirectToAction("Index");
             }
 
@@ -57,13 +60,10 @@ namespace WebUniversity.Controllers
         }
 
         // GET: Groups/Edit/5
-        public ActionResult Edit(long? id)
+        public ActionResult Edit(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Group group = db.Groups.Find(id);
+            Group group = groupService.Get(id);
+
             if (group == null)
             {
                 return HttpNotFound();
@@ -80,25 +80,24 @@ namespace WebUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(group).State = EntityState.Modified;
-                db.SaveChanges();
+                groupService.Edit(group);
+
                 return RedirectToAction("Index");
             }
+
             return View(group);
         }
 
         // GET: Groups/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Delete(long id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Group group = db.Groups.Find(id);
+            Group group = groupService.Get(id);
+
             if (group == null)
             {
                 return HttpNotFound();
             }
+
             return View(group);
         }
 
@@ -107,19 +106,9 @@ namespace WebUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Group group = db.Groups.Find(id);
-            db.Groups.Remove(group);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            groupService.Remove(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }
