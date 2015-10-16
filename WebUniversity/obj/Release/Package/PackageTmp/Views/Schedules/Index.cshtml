@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebUniversity.Models.Schedule>
+﻿@model IEnumerable<Shared.Models.Entities.Schedule>
 
 @{
     ViewBag.Title = "Schedules";
@@ -18,10 +18,10 @@
             @Html.DisplayNameFor(model => model.Group)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Teacher.Course)
+            @Html.DisplayNameFor(model => model.Course)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Teacher)
+            @Html.DisplayNameFor(model => model.Course.Teacher)
         </th>
         <th></th>
     </tr>
@@ -35,12 +35,12 @@
             @Html.DisplayFor(modelItem => item.Group.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Teacher.Course.name)
+            @Html.DisplayFor(modelItem => item.Course.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Teacher.Person.firstname)
-            @Html.DisplayFor(modelItem => item.Teacher.Person.lastname)
-            @Html.DisplayFor(modelItem => item.Teacher.Person.middlename)
+            @Html.DisplayFor(modelItem => item.Course.Teacher.Person.firstname)
+            @Html.DisplayFor(modelItem => item.Course.Teacher.Person.lastname)
+            @Html.DisplayFor(modelItem => item.Course.Teacher.Person.middlename)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |

@@ -1,4 +1,4 @@
-﻿@model WebUniversity.Models.Schedule
+﻿@model Shared.Models.Entities.Schedule
 
 @{
     ViewBag.Title = "Details";
@@ -27,21 +27,21 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Teacher.Course)
+            @Html.DisplayNameFor(model => model.Course)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Teacher.Course.name)
+            @Html.DisplayFor(model => model.Course.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Teacher)
+            @Html.DisplayNameFor(model => model.Course.Teacher)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Teacher.Person.firstname)
-            @Html.DisplayFor(model => model.Teacher.Person.lastname)
-            @Html.DisplayFor(model => model.Teacher.Person.middlename)
+            @Html.DisplayFor(model => model.Course.Teacher.Person.firstname)
+            @Html.DisplayFor(model => model.Course.Teacher.Person.lastname)
+            @Html.DisplayFor(model => model.Course.Teacher.Person.middlename)
         </dd>
 
     </dl>

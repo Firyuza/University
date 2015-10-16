@@ -1,4 +1,4 @@
-﻿@model WebUniversity.Models.Teacher
+﻿@model Shared.Models.Entities.Teacher
 
 @{
     ViewBag.Title = "Edit";
@@ -53,14 +53,6 @@
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Position.id, ViewBag.Position as SelectList)
                 @Html.ValidationMessageFor(model => model.Position.id, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Course.name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Course.id, ViewBag.Course as SelectList)
-                @Html.ValidationMessageFor(model => model.Course.id, "", new { @class = "text-danger" })
             </div>
         </div>
 

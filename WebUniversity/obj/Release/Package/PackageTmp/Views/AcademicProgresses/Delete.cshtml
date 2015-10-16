@@ -1,4 +1,4 @@
-﻿@model WebUniversity.Models.AcademicProgress
+﻿@model Shared.Models.Entities.AcademicProgress
 
 @{
     ViewBag.Title = "Delete";
@@ -30,20 +30,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayFor(model => model.Teacher.Course)
+            @Html.DisplayFor(model => model.Course)
         </dt>
 
         <dd>
-            @Html.DisplayNameFor(model => model.Teacher.Course.name)
+            @Html.DisplayNameFor(model => model.Course.name)
         </dd>
 
         <dt>
-            @Html.DisplayFor(model => model.Teacher)
+            @Html.DisplayFor(model => model.Course.Teacher)
         </dt>
         <dd>
-            @Html.DisplayNameFor(model => model.Teacher.Person.firstname)
-            @Html.DisplayNameFor(model => model.Teacher.Person.lastname)
-            @Html.DisplayNameFor(model => model.Teacher.Person.middlename)
+            @Html.DisplayNameFor(model => model.Course.Teacher.Person.firstname)
+            @Html.DisplayNameFor(model => model.Course.Teacher.Person.lastname)
+            @Html.DisplayNameFor(model => model.Course.Teacher.Person.middlename)
         </dd>
 
         <dt>

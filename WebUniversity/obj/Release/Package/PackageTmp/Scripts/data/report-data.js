@@ -4,7 +4,6 @@
         courses;
 
     $('#course-block').hide();
-    $('#teacher-block').hide();
 
     function getCourseByGroup(id) {
         $('#course').empty();
@@ -24,19 +23,6 @@
             }
         }).fail(function () {
             alert('Error!Please, try again!');
-        });
-    }
-
-    function getTeacherByGroup(id) {
-        $('#teacher').empty();
-        $('#teacher').append($('<option>').text('--Select--'));
-
-        var filteredCourses = _.filter(courses, function (item, key, a) {
-            return item.CourseId === parseInt(id);
-        });
-
-        $.each(filteredCourses, function (i, value) {
-            $('#teacher').append($('<option>').text(value.TeacherName).attr('value', value.TeacherId));
         });
     }
 
@@ -68,9 +54,5 @@
 
     $('select#course').change(function () {
         var id = $(this).val();
-
-        $('#teacher-block').show();
-
-        getTeacherByGroup(id);
     });
 });
